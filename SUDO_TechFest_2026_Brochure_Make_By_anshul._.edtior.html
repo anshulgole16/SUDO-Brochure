@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUDO Tech Fest 2026 - Brochure</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0a0f1e;
+    --blue: #1a3a8f;
+    --electric: #2563eb;
+    --light-blue: #60a5fa;
+    --cyan: #38bdf8;
+    --white: #ffffff;
+    --grey: #94a3b8;
+    --light-grey: #e2e8f0;
+    --accent: #3b82f6;
+    --glow: rgba(59,130,246,0.4);
+  }
+
+  body {
+    background: #0d1117;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav button {
+    background: rgba(255,255,255,0.07);
+    color: #e2e8f0;
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+
+  .nav button.active, .nav button:hover {
+    background: #2563eb;
+    color: #fff;
+    border-color: #2563eb;
+    box-shadow: 0 0 16px rgba(59,130,246,0.4);
+  }
+
+  /* BOOK CONTAINER */
+  .book-container {
+    width: 100%;
+    max-width: 900px;
+    perspective: 2000px;
+    position: relative;
+  }
+
+  /* BOOK SCENE — grid so all pages share same cell, no height jump */
+  .book-scene {
+    width: 100%;
+    display: grid;
+    transform-style: preserve-3d;
+  }
+
+  /* PAGE BASE — stacked in same grid cell */
+  .page {
+    grid-area: 1 / 1;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 40px rgba(59,130,246,0.2);
+    opacity: 0;
+    pointer-events: none;
+    transform-origin: left center;
+    transform: perspective(1200px) rotateY(-90deg);
+    transition: none;
+    backface-visibility: hidden;
+    visibility: hidden;
+  }
+
+  .page.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: perspective(1200px) rotateY(0deg);
+    visibility: visible;
+  }
+
+  /* FLIP ANIMATIONS */
+  @keyframes flipIn {
+    0%   { opacity: 0; transform: perspective(1200px) rotateY(-35deg) translateX(-30px) scale(0.97); filter: brightness(0.7); }
+    60%  { filter: brightness(1.1); }
+    100% { opacity: 1; transform: perspective(1200px) rotateY(0deg) translateX(0) scale(1); filter: brightness(1); }
+  }
+
+  @keyframes flipOut {
+    0%   { opacity: 1; transform: perspective(1200px) rotateY(0deg) translateX(0) scale(1); }
+    100% { opacity: 0; transform: perspective(1200px) rotateY(35deg) translateX(30px) scale(0.97); filter: brightness(0.7); }
+  }
+
+  @keyframes flipInReverse {
+    0%   { opacity: 0; transform: perspective(1200px) rotateY(35deg) translateX(30px) scale(0.97); filter: brightness(0.7); }
+    60%  { filter: brightness(1.1); }
+    100% { opacity: 1; transform: perspective(1200px) rotateY(0deg) translateX(0) scale(1); filter: brightness(1); }
+  }
+
+  @keyframes flipOutReverse {
+    0%   { opacity: 1; transform: perspective(1200px) rotateY(0deg) translateX(0) scale(1); }
+    100% { opacity: 0; transform: perspective(1200px) rotateY(-35deg) translateX(-30px) scale(0.97); filter: brightness(0.7); }
+  }
+
+  .page.flip-in        { visibility: visible; animation: flipIn 0.55s cubic-bezier(.4,0,.2,1) forwards; }
+  .page.flip-out       { visibility: visible; animation: flipOut 0.35s cubic-bezier(.4,0,.2,1) forwards; }
+  .page.flip-in-rev    { visibility: visible; animation: flipInReverse 0.55s cubic-bezier(.4,0,.2,1) forwards; }
+  .page.flip-out-rev   { visibility: visible; animation: flipOutReverse 0.35s cubic-bezier(.4,0,.2,1) forwards; }
+
+  /* SHIMMER OVERLAY on flip */
+  .page.flip-in::after, .page.flip-in-rev::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
+    animation: shimmer 0.55s ease forwards;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  @keyframes shimmer {
+    0%   { opacity: 0; background-position: -100% 0; }
+    40%  { opacity: 1; }
+    100% { opacity: 0; background-position: 200% 0; }
+  }
+
+  /* ===================== PAGE 1 ===================== */
+  .p1 { background: #0a0f1e; min-height: 640px; position: relative; overflow: hidden; }
+
+  .p1-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(37,99,235,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,99,235,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes gridPulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+  .p1-glow-orb {
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    border-radius: 50%;
+    animation: orbFloat 6s ease-in-out infinite;
+  }
+
+  @keyframes orbFloat { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-20px) scale(1.05)} }
+
+  .p1-stripe {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+    background: linear-gradient(to bottom, #2563eb, #38bdf8);
+    box-shadow: 0 0 20px #2563eb;
+  }
+
+  .p1-content { position: relative; z-index: 2; padding: 48px 52px; display: flex; flex-direction: column; min-height: 640px; }
+
+  .p1-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; }
+
+  .p1-logo-badge { display: flex; align-items: center; gap: 10px; }
+
+  .p1-logo-icon {
+    width: 44px; height: 44px; background: #2563eb; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', monospace; color: #fff; font-size: 12px; font-weight: 900;
+    box-shadow: 0 0 16px rgba(59,130,246,0.4);
+  }
+
+  .p1-logo-text { font-family: 'Rajdhani', sans-serif; font-size: 13px; color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; line-height: 1.3; }
+  .p1-logo-text strong { color: #fff; display: block; font-size: 15px; }
+
+  .p1-tagline-top {
+    font-family: 'Rajdhani', sans-serif; font-size: 13px; color: #38bdf8; letter-spacing: 3px; text-transform: uppercase;
+    border: 1px solid rgba(56,189,248,0.3); padding: 4px 12px; border-radius: 4px; background: rgba(56,189,248,0.05);
+  }
+
+  .p1-hero { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+  .p1-code-tag { font-family: 'Orbitron', monospace; font-size: 20px; color: #2563eb; letter-spacing: 4px; margin-bottom: 8px; animation: blink 2s step-end infinite; }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .p1-main-title {
+    font-family: 'Orbitron', monospace; font-size: clamp(64px, 10vw, 110px); font-weight: 900;
+    color: #fff; line-height: 0.9; letter-spacing: -2px; text-shadow: 0 0 40px rgba(37,99,235,0.5); margin-bottom: 4px;
+  }
+
+  .p1-main-title .slash { color: #2563eb; display: inline-block; animation: slashSpin 3s linear infinite; }
+
+  @keyframes slashSpin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+
+  .p1-subtitle-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .p1-bracket { color: #2563eb; font-size: 20px; font-weight: 700; }
+
+  .p1-subtitle { font-family: 'Rajdhani', sans-serif; font-size: 22px; color: #e2e8f0; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; }
+
+  .p1-tech-label {
+    display: inline-block; background: #2563eb; color: #fff;
+    font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700;
+    padding: 6px 20px; border-radius: 4px; letter-spacing: 3px; margin-bottom: 32px;
+    box-shadow: 0 0 20px rgba(59,130,246,0.4);
+  }
+
+  .p1-stats { display: flex; gap: 0; }
+
+  .p1-stat { padding: 16px 28px; border-left: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; }
+  .p1-stat:first-child { border-left: none; padding-left: 0; }
+  .p1-stat-num { font-family: 'Orbitron', monospace; font-size: 28px; font-weight: 700; color: #fff; line-height: 1; }
+  .p1-stat-num span { color: #2563eb; }
+  .p1-stat-label { font-size: 11px; color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; font-family: 'Rajdhani', sans-serif; }
+
+  .p1-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 24px;
+  }
+
+  .p1-date-venue { font-family: 'Rajdhani', sans-serif; color: #94a3b8; font-size: 13px; letter-spacing: 1px; }
+  .p1-date-venue strong { color: #60a5fa; display: block; font-size: 15px; }
+
+  .p1-register-btn {
+    background: linear-gradient(135deg, #2563eb, #1e40af); color: #fff; border: none;
+    padding: 12px 28px; border-radius: 6px; font-family: 'Rajdhani', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 2px; cursor: pointer;
+    box-shadow: 0 0 24px rgba(59,130,246,0.4); transition: all 0.2s; text-transform: uppercase;
+  }
+
+  .p1-register-btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(59,130,246,0.6); }
+
+  /* ===================== PAGE 2 ===================== */
+  .p2 { background: #f0f4ff; min-height: 640px; overflow: hidden; }
+
+  .p2-top-bar { background: #0a0f1e; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+  .p2-top-bar .brand { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 900; color: #fff; }
+  .p2-top-bar .brand span { color: #2563eb; }
+  .p2-top-bar .page-label { font-family: 'Rajdhani', sans-serif; font-size: 12px; letter-spacing: 3px; color: #94a3b8; text-transform: uppercase; }
+
+  .p2-body { display: grid; grid-template-columns: 1fr 1fr; min-height: 580px; }
+
+  .p2-left { background: #0a0f1e; padding: 40px; position: relative; overflow: hidden; }
+  .p2-left::before { content: ''; position: absolute; bottom: -60px; right: -60px; width: 200px; height: 200px; border: 40px solid rgba(37,99,235,0.15); border-radius: 50%; }
+  .p2-left::after { content: '</>'; position: absolute; bottom: 20px; right: 20px; font-family: 'Orbitron', monospace; font-size: 60px; font-weight: 900; color: rgba(37,99,235,0.08); }
+
+  .p2-section-label { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: 4px; color: #38bdf8; text-transform: uppercase; margin-bottom: 8px; }
+  .p2-heading { font-family: 'Orbitron', monospace; font-size: 28px; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 20px; }
+  .p2-heading span { color: #2563eb; }
+  .p2-desc { font-size: 13px; line-height: 1.7; color: #94a3b8; margin-bottom: 28px; }
+
+  .p2-highlights { display: flex; flex-direction: column; gap: 12px; }
+
+  .p2-hl-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: rgba(37,99,235,0.1); border-left: 3px solid #2563eb; border-radius: 0 6px 6px 0; }
+  .p2-hl-icon { width: 32px; height: 32px; background: #2563eb; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .p2-hl-text { font-family: 'Rajdhani', sans-serif; font-size: 14px; color: #e2e8f0; font-weight: 600; letter-spacing: 0.5px; }
+  .p2-hl-text small { display: block; color: #94a3b8; font-size: 11px; font-weight: 400; letter-spacing: 0; }
+
+  .p2-right { background: #fff; padding: 40px; }
+
+  .p2-themes-label { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: 4px; color: #2563eb; text-transform: uppercase; margin-bottom: 8px; }
+  .p2-themes-heading { font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900; color: #0a0f1e; margin-bottom: 24px; line-height: 1.2; }
+
+  .p2-theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+
+  .p2-theme-card { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 16px 14px; transition: all 0.2s; position: relative; overflow: hidden; }
+  .p2-theme-card::before { content: ''; position: absolute; bottom: 0; left: 0; height: 3px; width: 100%; background: linear-gradient(90deg, #2563eb, #38bdf8); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .p2-theme-card:hover::before { transform: scaleX(1); }
+  .p2-theme-card:hover { border-color: #2563eb; box-shadow: 0 4px 20px rgba(37,99,235,0.1); }
+  .p2-theme-icon { font-size: 22px; margin-bottom: 6px; }
+  .p2-theme-name { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700; color: #0a0f1e; letter-spacing: 0.5px; text-transform: uppercase; }
+  .p2-theme-desc { font-size: 11px; color: #94a3b8; margin-top: 3px; line-height: 1.4; }
+
+  .p2-mini-events-label { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: 4px; color: #2563eb; text-transform: uppercase; margin-bottom: 12px; }
+  .p2-mini-events { display: flex; gap: 8px; flex-wrap: wrap; }
+  .p2-mini-tag { background: #0a0f1e; color: #60a5fa; padding: 6px 14px; border-radius: 20px; font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 1px; }
+
+  /* ===================== PAGE 3 ===================== */
+  .p3 { background: #0a0f1e; min-height: 640px; overflow: hidden; position: relative; }
+
+  .p3-bg { position: absolute; inset: 0; background: radial-gradient(circle at 80% 20%, rgba(37,99,235,0.15) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(56,189,248,0.08) 0%, transparent 40%); }
+
+  .p3-header { padding: 36px 48px 0; position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: flex-start; }
+  .p3-section-label { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: 4px; color: #38bdf8; text-transform: uppercase; margin-bottom: 6px; }
+  .p3-heading { font-family: 'Orbitron', monospace; font-size: 28px; font-weight: 900; color: #fff; line-height: 1.1; }
+  .p3-heading span { color: #2563eb; }
+  .p3-page-num { font-family: 'Orbitron', monospace; font-size: 60px; font-weight: 900; color: rgba(255,255,255,0.04); line-height: 1; }
+
+  .p3-body { padding: 32px 48px; position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+  .p3-sub-heading { font-family: 'Rajdhani', sans-serif; font-size: 13px; letter-spacing: 3px; color: #2563eb; text-transform: uppercase; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid rgba(37,99,235,0.3); }
+
+  .p3-sponsor-tiers { display: flex; flex-direction: column; gap: 12px; }
+  .p3-tier { border-radius: 8px; padding: 16px 20px; }
+  .p3-tier.platinum { background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04)); border: 1px solid rgba(255,255,255,0.15); }
+  .p3-tier.gold { background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(251,191,36,0.04)); border: 1px solid rgba(251,191,36,0.2); }
+  .p3-tier.silver { background: linear-gradient(135deg, rgba(148,163,184,0.08), rgba(148,163,184,0.03)); border: 1px solid rgba(148,163,184,0.15); }
+  .p3-tier-name { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .p3-tier.platinum .p3-tier-name { color: #e2e8f0; }
+  .p3-tier.gold .p3-tier-name { color: #fbbf24; }
+  .p3-tier.silver .p3-tier-name { color: #94a3b8; }
+  .p3-tier-amount { font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .p3-tier-perks { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .p3-tier-perks li { font-size: 11px; color: #94a3b8; padding-left: 14px; position: relative; }
+  .p3-tier-perks li::before { content: '›'; position: absolute; left: 0; color: #2563eb; }
+
+  .p3-reach-stats { display: flex; flex-direction: column; gap: 16px; }
+  .p3-reach-item { display: flex; align-items: center; gap: 16px; padding: 14px 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; }
+  .p3-reach-icon { width: 40px; height: 40px; background: rgba(37,99,235,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; border: 1px solid rgba(37,99,235,0.3); }
+  .p3-reach-num { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 700; color: #fff; line-height: 1; }
+  .p3-reach-num span { color: #2563eb; }
+  .p3-reach-label { font-size: 11px; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; font-family: 'Rajdhani', sans-serif; margin-top: 3px; }
+
+  .p3-colleges { grid-column: 1 / -1; padding: 20px 24px; background: rgba(37,99,235,0.08); border: 1px solid rgba(37,99,235,0.2); border-radius: 10px; }
+  .p3-colleges-label { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: 3px; color: #38bdf8; text-transform: uppercase; margin-bottom: 12px; }
+  .p3-state-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .p3-state-tag { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #e2e8f0; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-family: 'Rajdhani', sans-serif; font-weight: 600; letter-spacing: 0.5px; }
+
+  /* ===================== PAGE 4 ===================== */
+  .p4 { background: #fff; min-height: 640px; overflow: hidden; position: relative; }
+
+  .p4-top { background: #0a0f1e; padding: 32px 48px; position: relative; overflow: hidden; }
+  .p4-top::after { content: ''; position: absolute; bottom: 0; right: 0; width: 300px; height: 120px; background: linear-gradient(135deg, transparent, rgba(37,99,235,0.2)); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+  .p4-top-label { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: 4px; color: #38bdf8; text-transform: uppercase; margin-bottom: 6px; }
+  .p4-top-heading { font-family: 'Orbitron', monospace; font-size: 32px; font-weight: 900; color: #fff; position: relative; z-index: 1; }
+  .p4-top-heading span { color: #2563eb; }
+
+  .p4-body { display: grid; grid-template-columns: 1fr 1fr; min-height: 480px; }
+
+  .p4-prizes { padding: 36px 40px; border-right: 1px solid #e2e8f0; }
+  .p4-prizes-label { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: 4px; color: #2563eb; text-transform: uppercase; margin-bottom: 20px; }
+
+  .p4-prize-item { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid #e2e8f0; }
+  .p4-prize-item:last-of-type { border-bottom: none; }
+  .p4-prize-rank { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; border: 2px solid; }
+  .p4-prize-rank.gold { border-color: #fbbf24; background: rgba(251,191,36,0.1); }
+  .p4-prize-rank.silver { border-color: #94a3b8; background: rgba(148,163,184,0.1); }
+  .p4-prize-rank.bronze { border-color: #c87941; background: rgba(200,121,65,0.1); }
+  .p4-prize-rank.special { border-color: #2563eb; background: rgba(37,99,235,0.1); }
+  .p4-prize-name { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; color: #0a0f1e; text-transform: uppercase; letter-spacing: 1px; }
+  .p4-prize-amount { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 700; color: #2563eb; margin-left: auto; }
+  .p4-prize-extras { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+  .p4-pool-banner { background: #2563eb; border-radius: 8px; padding: 16px 20px; margin-top: 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 20px rgba(59,130,246,0.4); }
+  .p4-pool-icon { font-size: 24px; }
+  .p4-pool-text { font-family: 'Orbitron', monospace; font-size: 11px; color: rgba(255,255,255,0.8); letter-spacing: 2px; }
+  .p4-pool-amount { font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900; color: #fff; line-height: 1; }
+
+  .p4-contact { padding: 36px 40px; display: flex; flex-direction: column; justify-content: space-between; }
+  .p4-contact-label { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: 4px; color: #2563eb; text-transform: uppercase; margin-bottom: 20px; }
+
+  .p4-timeline { display: flex; flex-direction: column; margin-bottom: 28px; }
+  .p4-tl-item { display: flex; gap: 16px; }
+  .p4-tl-dot-col { display: flex; flex-direction: column; align-items: center; width: 20px; flex-shrink: 0; }
+  .p4-tl-dot { width: 12px; height: 12px; border-radius: 50%; background: #2563eb; border: 2px solid #fff; box-shadow: 0 0 8px rgba(59,130,246,0.4); flex-shrink: 0; margin-top: 3px; }
+  .p4-tl-line { flex: 1; width: 2px; background: linear-gradient(to bottom, #2563eb, rgba(37,99,235,0.2)); margin: 4px 0; min-height: 20px; }
+  .p4-tl-content { padding-bottom: 20px; flex: 1; }
+  .p4-tl-date { font-family: 'Rajdhani', sans-serif; font-size: 11px; color: #2563eb; letter-spacing: 2px; text-transform: uppercase; }
+  .p4-tl-event { font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; color: #0a0f1e; letter-spacing: 0.5px; }
+
+  .p4-contact-info { display: flex; flex-direction: column; gap: 10px; padding: 20px; background: #f8faff; border-radius: 10px; border: 1px solid #e2e8f0; }
+  .p4-ci-item { display: flex; align-items: center; gap: 10px; }
+  .p4-ci-icon { width: 28px; height: 28px; background: #2563eb; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+  .p4-ci-text { font-family: 'Rajdhani', sans-serif; font-size: 13px; color: #0a0f1e; font-weight: 600; letter-spacing: 0.3px; }
+
+  .p4-footer { background: #0a0f1e; padding: 16px 48px; display: flex; justify-content: space-between; align-items: center; }
+  .p4-footer-brand { font-family: 'Orbitron', monospace; font-size: 14px; font-weight: 900; color: #fff; }
+  .p4-footer-brand span { color: #2563eb; }
+  .p4-footer-tag { font-family: 'Rajdhani', sans-serif; font-size: 12px; color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; }
+  .p4-footer-slogan { font-family: 'Rajdhani', sans-serif; font-size: 12px; color: #2563eb; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; }
+
+  /* PROGRESS DOTS */
+  .progress-dots { display: flex; gap: 8px; margin-top: 20px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s; }
+  .dot.active { background: #2563eb; box-shadow: 0 0 8px rgba(59,130,246,0.4); width: 24px; border-radius: 4px; }
+
+  .hint { font-family: 'Rajdhani', sans-serif; font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 2px; margin-top: 12px; text-transform: uppercase; }
+
+  /* SWIPE HINT */
+  .swipe-arrows {
+    position: fixed; bottom: 30px; right: 30px;
+    display: flex; gap: 10px; z-index: 100;
+  }
+
+  .swipe-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(37,99,235,0.8); border: none;
+    color: #fff; font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,99,235,0.4);
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+  }
+
+  .swipe-btn:hover { background: #2563eb; transform: scale(1.1); }
+  .swipe-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  /* ===================== RESPONSIVE ===================== */
+
+  /* Tablet: 600px - 900px */
+  @media (max-width: 900px) {
+    body { padding: 12px; }
+
+    .nav button { padding: 8px 16px; font-size: 13px; }
+
+    /* PAGE 1 */
+    .p1-content { padding: 32px 32px; }
+    .p1-main-title { font-size: clamp(48px, 12vw, 80px); }
+    .p1-top { flex-direction: column; gap: 12px; align-items: flex-start; margin-bottom: 28px; }
+    .p1-stats { flex-wrap: wrap; gap: 0; }
+    .p1-stat { padding: 12px 20px; }
+    .p1-stat-num { font-size: 22px; }
+    .p1-bottom { flex-direction: column; gap: 14px; align-items: flex-start; }
+
+    /* PAGE 2 */
+    .p2-body { grid-template-columns: 1fr; }
+    .p2-left { padding: 28px 28px; }
+    .p2-right { padding: 28px 28px; }
+    .p2-theme-grid { grid-template-columns: 1fr 1fr; }
+    .p2-top-bar { padding: 14px 24px; }
+
+    /* PAGE 3 */
+    .p3-header { padding: 28px 32px 0; }
+    .p3-body { grid-template-columns: 1fr; padding: 24px 32px; gap: 24px; }
+    .p3-page-num { font-size: 40px; }
+
+    /* PAGE 4 */
+    .p4-top { padding: 24px 32px; }
+    .p4-top-heading { font-size: 26px; }
+    .p4-body { grid-template-columns: 1fr; }
+    .p4-prizes { border-right: none; border-bottom: 1px solid #e2e8f0; padding: 28px 32px; }
+    .p4-contact { padding: 28px 32px; }
+    .p4-footer { padding: 14px 32px; flex-wrap: wrap; gap: 8px; }
+  }
+
+  /* Mobile: up to 599px */
+  @media (max-width: 599px) {
+    body { padding: 8px 6px; }
+
+    /* Nav */
+    .nav { gap: 6px; }
+    .nav button { padding: 7px 11px; font-size: 11px; letter-spacing: 0.5px; }
+
+    /* PAGE 1 */
+    .p1 { min-height: unset; }
+    .p1-content { padding: 20px 18px; min-height: unset; }
+    .p1-top { flex-direction: column; gap: 10px; align-items: flex-start; margin-bottom: 20px; }
+    .p1-tagline-top { font-size: 10px; letter-spacing: 1.5px; padding: 3px 8px; }
+    .p1-logo-icon { width: 36px; height: 36px; font-size: 10px; }
+    .p1-logo-text { font-size: 11px; }
+    .p1-logo-text strong { font-size: 13px; }
+    .p1-code-tag { font-size: 15px; letter-spacing: 2px; }
+    .p1-main-title { font-size: clamp(52px, 18vw, 72px); letter-spacing: -1px; }
+    .p1-subtitle { font-size: 16px; letter-spacing: 1.5px; }
+    .p1-bracket { font-size: 16px; }
+    .p1-tech-label { font-size: 13px; letter-spacing: 2px; padding: 5px 14px; margin-bottom: 20px; }
+    .p1-stats { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; overflow: hidden; }
+    .p1-stat { padding: 12px 14px; border-left: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .p1-stat:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.06); }
+    .p1-stat-num { font-size: 20px; }
+    .p1-stat-label { font-size: 9px; }
+    .p1-bottom { flex-direction: column; gap: 14px; padding-top: 16px; margin-top: 16px; }
+    .p1-date-venue { font-size: 11px; }
+    .p1-date-venue strong { font-size: 13px; }
+    .p1-register-btn { width: 100%; text-align: center; padding: 12px 20px; font-size: 13px; }
+    .p1-glow-orb { width: 250px; height: 250px; }
+
+    /* PAGE 2 */
+    .p2-top-bar { padding: 12px 16px; }
+    .p2-top-bar .brand { font-size: 15px; }
+    .p2-top-bar .page-label { font-size: 10px; display: none; }
+    .p2-body { grid-template-columns: 1fr; }
+    .p2-left { padding: 20px 18px; }
+    .p2-right { padding: 20px 18px; }
+    .p2-heading { font-size: 22px; }
+    .p2-desc { font-size: 12px; }
+    .p2-theme-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .p2-theme-card { padding: 12px 10px; }
+    .p2-theme-icon { font-size: 18px; }
+    .p2-theme-name { font-size: 11px; }
+    .p2-theme-desc { font-size: 10px; }
+    .p2-hl-item { padding: 10px 12px; }
+    .p2-hl-icon { width: 28px; height: 28px; font-size: 13px; }
+    .p2-hl-text { font-size: 13px; }
+    .p2-mini-events { gap: 6px; }
+    .p2-mini-tag { font-size: 11px; padding: 5px 10px; }
+
+    /* PAGE 3 */
+    .p3 { min-height: unset; }
+    .p3-header { padding: 20px 18px 0; flex-direction: row; align-items: flex-start; }
+    .p3-heading { font-size: 22px; }
+    .p3-page-num { font-size: 36px; }
+    .p3-body { grid-template-columns: 1fr; padding: 18px 18px; gap: 20px; }
+    .p3-tier { padding: 12px 14px; }
+    .p3-tier-amount { font-size: 18px; }
+    .p3-tier-name { font-size: 11px; }
+    .p3-tier-perks li { font-size: 10px; }
+    .p3-reach-stats { gap: 10px; }
+    .p3-reach-item { padding: 10px 12px; gap: 12px; }
+    .p3-reach-icon { width: 34px; height: 34px; font-size: 15px; }
+    .p3-reach-num { font-size: 16px; }
+    .p3-reach-label { font-size: 10px; }
+    .p3-colleges { padding: 14px 16px; }
+    .p3-state-tag { font-size: 10px; padding: 4px 10px; }
+
+    /* PAGE 4 */
+    .p4 { min-height: unset; }
+    .p4-top { padding: 18px 18px; }
+    .p4-top-heading { font-size: 22px; line-height: 1.2; }
+    .p4-body { grid-template-columns: 1fr; min-height: unset; }
+    .p4-prizes { border-right: none; border-bottom: 1px solid #e2e8f0; padding: 20px 18px; }
+    .p4-prize-item { padding: 12px 0; gap: 12px; }
+    .p4-prize-rank { width: 36px; height: 36px; font-size: 16px; }
+    .p4-prize-name { font-size: 13px; }
+    .p4-prize-amount { font-size: 16px; }
+    .p4-pool-banner { padding: 12px 14px; }
+    .p4-pool-amount { font-size: 18px; }
+    .p4-contact { padding: 20px 18px; gap: 20px; }
+    .p4-contact-info { padding: 14px; gap: 8px; }
+    .p4-ci-text { font-size: 12px; }
+    .p4-tl-event { font-size: 13px; }
+    .p4-footer { padding: 14px 18px; flex-direction: column; align-items: flex-start; gap: 4px; }
+    .p4-footer-brand { font-size: 12px; }
+    .p4-footer-tag, .p4-footer-slogan { font-size: 10px; }
+
+    /* Floating arrows: move to bottom-center on mobile */
+    .swipe-arrows { right: 50%; transform: translateX(50%); bottom: 18px; gap: 16px; }
+    .swipe-btn { width: 40px; height: 40px; font-size: 16px; }
+
+    .hint { font-size: 10px; }
+    .progress-dots { margin-top: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <button onclick="goPage(1)" id="btn1" class="active">Cover</button>
+  <button onclick="goPage(2)" id="btn2">About &amp; Themes</button>
+  <button onclick="goPage(3)" id="btn3">Sponsors &amp; Reach</button>
+  <button onclick="goPage(4)" id="btn4">Prizes &amp; Contact</button>
+</div>
+
+<div class="book-container">
+  <div class="book-scene">
+
+    <!-- PAGE 1: COVER -->
+    <div class="page p1 active" id="page1">
+      <div class="p1-bg-grid"></div>
+      <div class="p1-glow-orb"></div>
+      <div class="p1-stripe"></div>
+      <div class="p1-content">
+        <div class="p1-top">
+          <div class="p1-logo-badge">
+            <div class="p1-logo-icon">&lt;/&gt;</div>
+            <div class="p1-logo-text">
+              <strong>Amity University</strong>
+              Gwalior, Madhya Pradesh
+            </div>
+          </div>
+          <div class="p1-tagline-top">IDEAS TURNED INTO IMPACT</div>
+        </div>
+        <div class="p1-hero">
+          <div class="p1-code-tag">&lt; / &gt;</div>
+          <div class="p1-main-title">SUD<span class="slash">O</span></div>
+          <div class="p1-subtitle-row">
+            <span class="p1-bracket">[</span>
+            <span class="p1-subtitle">Super User Do</span>
+            <span class="p1-bracket">]</span>
+          </div>
+          <div class="p1-tech-label">TECH FEST 2026</div>
+          <div class="p1-stats">
+            <div class="p1-stat">
+              <div class="p1-stat-num">500<span>+</span></div>
+              <div class="p1-stat-label">Participants</div>
+            </div>
+            <div class="p1-stat">
+              <div class="p1-stat-num">100<span>+</span></div>
+              <div class="p1-stat-label">Teams</div>
+            </div>
+            <div class="p1-stat">
+              <div class="p1-stat-num">48<span>H</span></div>
+              <div class="p1-stat-label">Hackathon</div>
+            </div>
+            <div class="p1-stat">
+              <div class="p1-stat-num">&#8377;1<span>L+</span></div>
+              <div class="p1-stat-label">Prize Pool</div>
+            </div>
+          </div>
+        </div>
+        <div class="p1-bottom">
+          <div class="p1-date-venue">
+            <strong>SEPTEMBER 2026</strong>
+            Amity University, Gwalior &middot; 48 Hours &middot; Infinite Innovation
+          </div>
+          <button class="p1-register-btn" onclick="goPage(4)">REGISTER NOW &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: ABOUT & THEMES -->
+    <div class="page p2" id="page2">
+      <div class="p2-top-bar">
+        <div class="brand">SUD<span>O</span> 2026</div>
+        <div class="page-label">About &amp; Themes &middot; Page 2 of 4</div>
+      </div>
+      <div class="p2-body">
+        <div class="p2-left">
+          <div class="p2-section-label">About The Event</div>
+          <div class="p2-heading">WHERE CODE<br><span>MEETS</span><br>INNOVATION</div>
+          <div class="p2-desc">
+            SUDO (Super User Do) is Amity University Gwalior's flagship 48-hour hackathon and tech festival — a high-octane convergence of brilliant minds, breakthrough ideas, and cutting-edge technology. Open to students from across India, SUDO 2026 is your arena to build, compete, and disrupt.
+          </div>
+          <div class="p2-highlights">
+            <div class="p2-hl-item">
+              <div class="p2-hl-icon">&#128197;</div>
+              <div class="p2-hl-text">September 2026<small>Amity University, Gwalior Campus</small></div>
+            </div>
+            <div class="p2-hl-item">
+              <div class="p2-hl-icon">&#127942;</div>
+              <div class="p2-hl-text">48-Hour Hackathon<small>Non-stop innovation sprint + Mini Events</small></div>
+            </div>
+            <div class="p2-hl-item">
+              <div class="p2-hl-icon">&#127891;</div>
+              <div class="p2-hl-text">200+ Colleges &middot; 15+ States<small>All streams welcome — CS, IT, ECE &amp; more</small></div>
+            </div>
+            <div class="p2-hl-item">
+              <div class="p2-hl-icon">&#128241;</div>
+              <div class="p2-hl-text">50,000+ Social Media Reach<small>Live coverage &middot; LinkedIn &middot; Instagram &middot; Twitter</small></div>
+            </div>
+          </div>
+        </div>
+        <div class="p2-right">
+          <div class="p2-themes-label">Hackathon Tracks</div>
+          <div class="p2-themes-heading">CHOOSE YOUR<br>BATTLEFIELD</div>
+          <div class="p2-theme-grid">
+            <div class="p2-theme-card"><div class="p2-theme-icon">&#129302;</div><div class="p2-theme-name">Artificial Intelligence</div><div class="p2-theme-desc">ML, GenAI, Computer Vision &amp; NLP</div></div>
+            <div class="p2-theme-card"><div class="p2-theme-icon">&#128272;</div><div class="p2-theme-name">Cybersecurity</div><div class="p2-theme-desc">Ethical hacking &amp; threat detection</div></div>
+            <div class="p2-theme-card"><div class="p2-theme-icon">&#127973;</div><div class="p2-theme-name">Healthcare Tech</div><div class="p2-theme-desc">Digital health &amp; diagnostics</div></div>
+            <div class="p2-theme-card"><div class="p2-theme-icon">&#128179;</div><div class="p2-theme-name">FinTech</div><div class="p2-theme-desc">Payments, blockchain &amp; finance</div></div>
+            <div class="p2-theme-card"><div class="p2-theme-icon">&#127807;</div><div class="p2-theme-name">Sustainability</div><div class="p2-theme-desc">Climate tech &amp; smart cities</div></div>
+            <div class="p2-theme-card"><div class="p2-theme-icon">&#127891;</div><div class="p2-theme-name">EdTech</div><div class="p2-theme-desc">Learning platforms &amp; AR/VR</div></div>
+          </div>
+          <div class="p2-mini-events-label">Mini Events</div>
+          <div class="p2-mini-events">
+            <span class="p2-mini-tag">&#9889; Code Sprint</span>
+            <span class="p2-mini-tag">&#128027; Bug Busters</span>
+            <span class="p2-mini-tag">&#128221; Tech Quiz</span>
+            <span class="p2-mini-tag">&#127912; UI/UX Challenge</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: SPONSORS & REACH -->
+    <div class="page p3" id="page3">
+      <div class="p3-bg"></div>
+      <div class="p3-header">
+        <div>
+          <div class="p3-section-label">Sponsorship &amp; Reach</div>
+          <div class="p3-heading">POWER THE<br><span>FUTURE</span></div>
+        </div>
+        <div class="p3-page-num">03</div>
+      </div>
+      <div class="p3-body">
+        <div>
+          <div class="p3-sub-heading">Sponsorship Tiers</div>
+          <div class="p3-sponsor-tiers">
+            <div class="p3-tier platinum">
+              <div class="p3-tier-name">&#127945; PLATINUM SPONSOR</div>
+              <div class="p3-tier-amount">&#8377;1,00,000+</div>
+              <ul class="p3-tier-perks">
+                <li>Title branding on all materials &amp; stage</li>
+                <li>30-min keynote / product demo slot</li>
+                <li>Exclusive recruitment booth</li>
+                <li>Logo on all social media (50K+ reach)</li>
+                <li>Mention in press releases &amp; media</li>
+              </ul>
+            </div>
+            <div class="p3-tier gold">
+              <div class="p3-tier-name">&#129352; GOLD SPONSOR</div>
+              <div class="p3-tier-amount">&#8377;50,000</div>
+              <ul class="p3-tier-perks">
+                <li>Premium booth space + banner placement</li>
+                <li>15-min product showcase slot</li>
+                <li>Social media mentions &amp; website logo</li>
+                <li>Access to participant resumes</li>
+              </ul>
+            </div>
+            <div class="p3-tier silver">
+              <div class="p3-tier-name">&#129353; SILVER SPONSOR</div>
+              <div class="p3-tier-amount">&#8377;25,000</div>
+              <ul class="p3-tier-perks">
+                <li>Standard booth + branding exposure</li>
+                <li>Social media shoutouts</li>
+                <li>Goodies distribution opportunity</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="p3-sub-heading">Our Reach &amp; Impact</div>
+          <div class="p3-reach-stats">
+            <div class="p3-reach-item"><div class="p3-reach-icon">&#128101;</div><div><div class="p3-reach-num">500<span>+</span></div><div class="p3-reach-label">Expected Participants</div></div></div>
+            <div class="p3-reach-item"><div class="p3-reach-icon">&#127979;</div><div><div class="p3-reach-num">200<span>+</span></div><div class="p3-reach-label">Colleges Pan-India</div></div></div>
+            <div class="p3-reach-item"><div class="p3-reach-icon">&#128506;</div><div><div class="p3-reach-num">15<span>+</span></div><div class="p3-reach-label">States Represented</div></div></div>
+            <div class="p3-reach-item"><div class="p3-reach-icon">&#128242;</div><div><div class="p3-reach-num">50K<span>+</span></div><div class="p3-reach-label">Social Media Impressions</div></div></div>
+            <div class="p3-reach-item"><div class="p3-reach-icon">&#127919;</div><div><div class="p3-reach-num">10K<span>+</span></div><div class="p3-reach-label">Live Event Viewers</div></div></div>
+          </div>
+        </div>
+        <div class="p3-colleges">
+          <div class="p3-colleges-label">Participating States &amp; Regions</div>
+          <div class="p3-state-grid">
+            <span class="p3-state-tag">Madhya Pradesh</span><span class="p3-state-tag">Delhi/NCR</span>
+            <span class="p3-state-tag">Maharashtra</span><span class="p3-state-tag">Uttar Pradesh</span>
+            <span class="p3-state-tag">Rajasthan</span><span class="p3-state-tag">Gujarat</span>
+            <span class="p3-state-tag">Karnataka</span><span class="p3-state-tag">Tamil Nadu</span>
+            <span class="p3-state-tag">Punjab</span><span class="p3-state-tag">West Bengal</span>
+            <span class="p3-state-tag">Haryana</span><span class="p3-state-tag">Telangana</span>
+            <span class="p3-state-tag">Bihar</span><span class="p3-state-tag">Jharkhand</span>
+            <span class="p3-state-tag">Chhattisgarh</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: PRIZES & CONTACT -->
+    <div class="page p4" id="page4">
+      <div class="p4-top">
+        <div class="p4-top-label">Prizes &amp; Registration</div>
+        <div class="p4-top-heading">WIN BIG.<br><span>CODE</span> THE FUTURE.</div>
+      </div>
+      <div class="p4-body">
+        <div class="p4-prizes">
+          <div class="p4-prizes-label">Prize Distribution</div>
+          <div class="p4-prize-item"><div class="p4-prize-rank gold">&#127942;</div><div><div class="p4-prize-name">Winner</div><div class="p4-prize-extras">Trophy + Goodies + Certificate</div></div><div class="p4-prize-amount">&#8377;50,000</div></div>
+          <div class="p4-prize-item"><div class="p4-prize-rank silver">&#129352;</div><div><div class="p4-prize-name">1st Runner-Up</div><div class="p4-prize-extras">Trophy + Goodies + Certificate</div></div><div class="p4-prize-amount">&#8377;25,000</div></div>
+          <div class="p4-prize-item"><div class="p4-prize-rank bronze">&#129353;</div><div><div class="p4-prize-name">2nd Runner-Up</div><div class="p4-prize-extras">Trophy + Goodies + Certificate</div></div><div class="p4-prize-amount">&#8377;15,000</div></div>
+          <div class="p4-prize-item"><div class="p4-prize-rank special">&#11088;</div><div><div class="p4-prize-name">Best Project</div><div class="p4-prize-extras">Special Award + Internship Opportunity</div></div><div class="p4-prize-amount">&#8377;10,000</div></div>
+          <div class="p4-pool-banner">
+            <div class="p4-pool-icon">&#127942;</div>
+            <div><div class="p4-pool-text">TOTAL PRIZE POOL</div><div class="p4-pool-amount">&#8377;1,00,000+</div></div>
+            <div style="margin-left:auto;font-family:'Rajdhani',sans-serif;font-size:12px;color:rgba(255,255,255,0.7);text-align:right;">+ Exclusive<br>Goodies</div>
+          </div>
+        </div>
+        <div class="p4-contact">
+          <div>
+            <div class="p4-contact-label">Important Timeline</div>
+            <div class="p4-timeline">
+              <div class="p4-tl-item"><div class="p4-tl-dot-col"><div class="p4-tl-dot"></div><div class="p4-tl-line"></div></div><div class="p4-tl-content"><div class="p4-tl-date">JULY 2026</div><div class="p4-tl-event">Registrations Open</div></div></div>
+              <div class="p4-tl-item"><div class="p4-tl-dot-col"><div class="p4-tl-dot"></div><div class="p4-tl-line"></div></div><div class="p4-tl-content"><div class="p4-tl-date">AUGUST 2026</div><div class="p4-tl-event">Team Formation &amp; Problem Statement Release</div></div></div>
+              <div class="p4-tl-item"><div class="p4-tl-dot-col"><div class="p4-tl-dot"></div><div class="p4-tl-line"></div></div><div class="p4-tl-content"><div class="p4-tl-date">AUGUST END</div><div class="p4-tl-event">Registrations Close</div></div></div>
+              <div class="p4-tl-item"><div class="p4-tl-dot-col"><div class="p4-tl-dot"></div><div class="p4-tl-line" style="background:transparent;"></div></div><div class="p4-tl-content"><div class="p4-tl-date">SEPTEMBER 2026</div><div class="p4-tl-event">&#128640; SUDO Tech Fest Begins!</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="p4-contact-label">Contact &amp; Register</div>
+            <div class="p4-contact-info">
+              <div class="p4-ci-item"><div class="p4-ci-icon">&#127760;</div><div class="p4-ci-text">www.amity.edu/gwalior</div></div>
+              <div class="p4-ci-item"><div class="p4-ci-icon">&#128231;</div><div class="p4-ci-text">sudo2026@amity.edu</div></div>
+              <div class="p4-ci-item"><div class="p4-ci-icon">&#128248;</div><div class="p4-ci-text">/sudo.hackathon</div></div>
+              <div class="p4-ci-item"><div class="p4-ci-icon">&#128188;</div><div class="p4-ci-text">/company/sudo-hackathon</div></div>
+              <div class="p4-ci-item"><div class="p4-ci-icon">&#128205;</div><div class="p4-ci-text">Amity University, Gwalior, M.P.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p4-footer">
+        <div class="p4-footer-brand">SUD<span>O</span> 2026</div>
+        <div class="p4-footer-tag">Super User Do &middot; Tech Fest</div>
+        <div class="p4-footer-slogan">Build &middot; Innovate &middot; Disrupt</div>
+      </div>
+    </div>
+
+  </div><!-- end book-scene -->
+</div><!-- end book-container -->
+
+<div class="progress-dots">
+  <div class="dot active" onclick="goPage(1)"></div>
+  <div class="dot" onclick="goPage(2)"></div>
+  <div class="dot" onclick="goPage(3)"></div>
+  <div class="dot" onclick="goPage(4)"></div>
+</div>
+<div class="hint">Use buttons above or &larr; &rarr; arrow keys to flip pages</div>
+
+<!-- Floating arrow buttons -->
+<div class="swipe-arrows">
+  <button class="swipe-btn" id="prevBtn" onclick="goPage(currentPage-1)" disabled>&#8592;</button>
+  <button class="swipe-btn" id="nextBtn" onclick="goPage(currentPage+1)">&#8594;</button>
+</div>
+
+<script>
+  let currentPage = 1;
+  let animating = false;
+
+  function goPage(n) {
+    if (n === currentPage || animating || n < 1 || n > 4) return;
+    animating = true;
+
+    const oldPage = document.getElementById('page' + currentPage);
+    const newPage = document.getElementById('page' + n);
+    const forward = n > currentPage;
+
+    // Nav buttons
+    document.querySelectorAll('.nav button').forEach((b, i) => b.classList.toggle('active', i + 1 === n));
+    // Dots
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i + 1 === n));
+    // Arrow buttons
+    document.getElementById('prevBtn').disabled = n <= 1;
+    document.getElementById('nextBtn').disabled = n >= 4;
+
+    // Animate out current
+    oldPage.classList.remove('active');
+    oldPage.style.visibility = 'visible'; // keep visible during exit anim
+    oldPage.classList.add(forward ? 'flip-out' : 'flip-out-rev');
+
+    setTimeout(() => {
+      oldPage.classList.remove('flip-out', 'flip-out-rev');
+      oldPage.style.visibility = '';
+
+      // Animate in new page
+      newPage.classList.add('active');
+      newPage.classList.add(forward ? 'flip-in' : 'flip-in-rev');
+
+      setTimeout(() => {
+        newPage.classList.remove('flip-in', 'flip-in-rev');
+        currentPage = n;
+        animating = false;
+      }, 560);
+    }, 350);
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') goPage(currentPage + 1);
+    if (e.key === 'ArrowLeft')  goPage(currentPage - 1);
+  });
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) goPage(diff > 0 ? currentPage + 1 : currentPage - 1);
+  });
+</script>
+</body>
+</html>
